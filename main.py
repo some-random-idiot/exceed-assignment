@@ -48,9 +48,17 @@ def get_reservation_by_table(table: int):
 
 @app.post("/reservation")
 def reserve(reservation: Reservation):
-    reservation = jsonable_encoder(reservation)
-    collection.insert_one(reservation)
-    return {"status": "Reservation created."}
+    already_reserved = collection.find_one({"time": reservation.time}, {"_id": 0}) or \
+                       collection.find_one({"table_number": reservation.table_number}, {"_id": 0})
+    if already_reserved:
+        return {
+            "status": "Reservation not available.",
+            "result": already_reserved
+        }
+    else:
+        reservation = jsonable_encoder(reservation)
+        collection.insert_one(reservation)
+        return {"status": "Reservation created."}
 
 
 @app.put("/reservation/update/")
