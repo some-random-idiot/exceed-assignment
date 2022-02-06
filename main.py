@@ -24,7 +24,7 @@ def get_reservation_by_name(name: str):
     result = collection.find_one({"name": name}, {"_id": 0})
     if result:
         return {
-            "status": "found",
+            "status": "Found!",
             "result": result
         }
     else:
@@ -39,7 +39,7 @@ def get_reservation_by_table(table: int):
         result_list.append(reservation)
     if result:
         return {
-            "status": "found!",
+            "status": "Found!",
             "result": result_list
         }
     else:
