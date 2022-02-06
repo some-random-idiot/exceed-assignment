@@ -33,6 +33,10 @@ def reserve(reservation : Reservation):
 
 @app.put("/reservation/update/")
 def update_reservation(reservation: Reservation):
+    if int(reservation.time[0:2]) >= 24:
+        return {
+        "status": "Time is unavailable."
+    }
     reserve = collection.find_one({"time": reservation.time}, {"_id": 0})
     queue = {"table_number": reservation.table_number, 
              "name": reservation.name}
