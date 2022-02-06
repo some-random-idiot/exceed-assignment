@@ -21,11 +21,14 @@ app = FastAPI()
 
 @app.get("/reservation/by-name/{name}")
 def get_reservation_by_name(name: str):
-    result = collection.find_one({"name": name}, {"_id": 0})
+    result = collection.find({"name": name}, {"_id": 0})
+    result_list = []
+    for reservation in result:
+        result_list.append(reservation)
     if result:
         return {
             "status": "Found!",
-            "result": result
+            "result": result_list
         }
     else:
         return {"status": "Reservation not found."}
