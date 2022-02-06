@@ -63,9 +63,24 @@ def reserve(reservation: Reservation):
 
 @app.put("/reservation/update/")
 def update_reservation(reservation: Reservation):
-    pass
+    reserve = collection.find_one({"time": reservation.time}, {"_id": 0})
+    queue = {"table_number": reservation.table_number, 
+             "name": reservation.name}
+    new_time = { "$set": {"time": reservation.time} }
+    if reserve is None:
+        collection.update_many(queue, new_time)
+        return {
+            "status": "Updated"
+        }
+    return {
+        "status": "Unfortunately, table is already reserved."
+    }
 
 
 @app.delete("/reservation/delete/{name}/{table_number}")
-def cancel_reservation(name: str, table_number: int):
-    pass
+def cancel_reservation(name: str, table_number : int):
+    reservation = {"name" : name, "table_number": table_number}
+    collection.delete_one(reservation)
+    return {
+        "status": "Deleted"
+    }
