@@ -33,9 +33,9 @@ def reserve(reservation : Reservation):
 
 @app.put("/reservation/update/")
 def update_reservation(reservation: Reservation):
-    pass
+    update_info = 
 
 @app.delete("/reservation/delete/{name}/{table_number}")
 def cancel_reservation(name: str, table_number : int):
     reservation = {"name" : name, "table_namber": table_number}
-    menu_collection.delete_one(reservation)
+    collection.delete_one(reservation)
