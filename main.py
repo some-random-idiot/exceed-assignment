@@ -33,7 +33,13 @@ def reserve(reservation : Reservation):
 
 @app.put("/reservation/update/")
 def update_reservation(reservation: Reservation):
-    update_info = 
+    queue = collection.find_one({"table_number": reservation.table_number, 
+                                 "time": reservation.new_time})
+    if queue is None:
+        return collection.update_one({"name": reservation.name, 
+                                      "table_number": reservation.table_number}, 
+                                      { "%set": {"time": reservation.new_time}
+                                    })
 
 @app.delete("/reservation/delete/{name}/{table_number}")
 def cancel_reservation(name: str, table_number : int):
